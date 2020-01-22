@@ -8,7 +8,7 @@ export default class Card {
      * @param {number} _interval 
      * @param {Date} _lastReviewTime 
      */
-    Card(_front, _back, _type, _ease, _interval, _lastReviewTime) {
+    constructor (_front, _back, _type, _ease, _interval, _lastReviewTime) {
         this.front = _front;
         this.type = _type;
         this.ease = _ease;

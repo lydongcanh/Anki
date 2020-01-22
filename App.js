@@ -1,19 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from "react-native-paper";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import HomeScreen from "./src/components/screens/homeScreen";
+import CreateCardScreen from "./src/components/screens/createCardScreen";
+
+const MainNavigator = createStackNavigator({
+    Home: { screen: HomeScreen },
+    CreateCard: { screen: CreateCardScreen, navigationOptions: { title: "New Card" } }
+});
+
+const Navigation = createAppContainer(MainNavigator);
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello, Anki!</Text>
-    </View>
-  );
+    return (
+        <Provider>
+            <Navigation />
+        </Provider>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
