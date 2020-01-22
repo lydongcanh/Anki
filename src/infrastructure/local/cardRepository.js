@@ -1,61 +1,62 @@
 import { AsyncStorage } from "react-native";
+import Card from "../../core/entity/card";
+
+const CARD_PREFIX_ID = "CARD";
 
 export default class CardRepository {
 
-    /** Get all cards in a desk. */
-    async get(deskName) {
+    /** Get all cards. */
+    async getAll() {
         try {
-            const cardsString = await AsyncStorage.getItem(deskName);
-            if (cardsString === null)
-                return { error: "Error retrieving data!" }
+            const allKeys = await AsyncStorage.getAllKeys();
+            
+            const cards = [];
+            for(const key of allKeys) {
+                if (key.startsWith(CARD_PREFIX_ID)) {
+                    const cardString = await AsyncStorage.getItem(key);
+                    cards.push(JSON.parse(cardString));
+                }
+            }
 
-            cards = JSON.parse(cardsString);
             return { result: cards };
         } catch (error) {
             return { error: error };
         }
     }
 
-    /** Create new card in a desk. */
-    async create({ deskName, front, back }) {
-        const result = await this.get(deskName);
-        if (result.error)
-            return result;
-
+    /** Get a card with its unique front. */
+    async get(cardFront) {
         try {
-            const cards = result.result;
-            for (const card of cards) {
-                if (card.front === front)
-                    return { error: `${front} card already exist.` };
-            }
+            const cardsString = await AsyncStorage.getItem(CARD_PREFIX_ID + cardFront);
+            if (cardsString === null)
+                return { error: `${cardFront} doesn't exist.` }
 
-            cards.push({
-                front: front,
-                back: back
-            });
-            await AsyncStorage.setItem(deskName, JSON.stringify(cards));
-            return { result: `${front} card successfully created.` };
+            card = JSON.parse(cardsString);
+            return { result: card };
         } catch (error) {
             return { error: error };
         }
     }
 
-    /** Delete a card in a desk. */
-    async delete({ deskName, front }) {
-        const result = await this.get(deskName);
-        if (result.error)
-            return result;
-
+    /** Create new or update a card if it already exists. */
+    async put(card) {
         try {
-            let cards = result.result;
-            for(let i = 0; i < cards.length; i++) {
-                if (cards[i].front === front) {
-                    cards.splice(i, 1);
-                    await AsyncStorage.setItem(deskName, JSON.stringify(cards));
-                    return { result: `${front} card successfully deleted.` }; 
-                }
-            }
-            return { error: `${front} card doesn't exist.` };
+            await AsyncStorage.setItem(CARD_PREFIX_ID + card.front, JSON.stringify(card));
+            return { result: `${card.front} card is put.` };
+        } catch (error) {
+            return { error: error };
+        }
+    }
+
+    /** Delete a card with its unique front. */
+    async delete(cardFront) {
+        try {
+            const existCard = await AsyncStorage.getItem(CARD_PREFIX_ID + cardFront);
+            if (!existCard)
+                return { error: `${front} card doesn't exist.` };
+
+            await AsyncStorage.removeItem(CARD_PREFIX_ID + cardFront);
+            return { result: `${cardFront} card is deleted.` };
         } catch (error) {
             return { error: error };
         }

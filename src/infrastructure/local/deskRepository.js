@@ -24,28 +24,37 @@ export default class DeskRepository {
         }
     }
 
-    /**
-     * Create new desk.
-     * @param {Desk} desk 
-     */
-    async create(desk) {
-        try { 
-            const deskId = DESK_PREFIX_ID + desk.name;
-            const existDesk = await AsyncStorage.getItem(deskId);
+    /** Get a desk with its unique name. */
+    async get(deskName) {
+        try {
+            const deskString = await AsyncStorage.getItem(DESK_PREFIX_ID + deskName);
+            if (!deskString)
+                return { error: `${deskName} doesn't exists.` };
 
-            if (existDesk !== null)
-                return { error: `${desk.name} desk already exists.` };
-
-            await AsyncStorage.setItem(deskId, JSON.stringify(desk));
-            return { result: `${desk.name} desk is created.` };
+            const desk = JSON.parse(deskString);
+            return { result: desk };
         } catch (error) {
             return { error: error };
         }
     }
 
-    /** Delete a desk with its name. */
+    /** Create new or update a desk if it already exists. */
+    async put(desk) {
+        try {
+            await AsyncStorage.setItem(DESK_PREFIX_ID + desk.name, JSON.stringify(desk));
+            return { result: `${desk.name} desk is put.` };
+        } catch (error) {
+            return { error: error };
+        }
+    }
+
+    /** Delete a desk with its unique name. */
     async delete(deskName) {
         try {
+            const existDesk = await AsyncStorage.getItem(DESK_PREFIX_ID + deskName);
+            if (!existDesk)
+                return { error: `${deskName} desk doesn't exist.` };
+
             await AsyncStorage.removeItem(DESK_PREFIX_ID + deskName);
             return { result: `${deskName} desk is deleted.` }; 
         } catch (error) {
