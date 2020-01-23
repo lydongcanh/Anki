@@ -1,7 +1,5 @@
 import { AsyncStorage } from "react-native";
-import Card from "../../core/entity/card";
-
-const CARD_PREFIX_ID = "CARD";
+import { CARD_PREFIX_ID } from "../../core/constraints";
 
 export default class CardRepository {
 

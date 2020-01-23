@@ -1,7 +1,5 @@
 import { AsyncStorage } from "react-native";
-import Desk from "../../core/entity/desk";
-
-const DESK_PREFIX_ID = "DESK";
+import { DESK_PREFIX_ID } from "../../core/constraints";
 
 export default class DeskRepository {
 
