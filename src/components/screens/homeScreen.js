@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
+import Toast from "react-native-simple-toast";
 import NewDeskDialog from "../molecules/newDeskDialog";
 import DeskList from "../organisms/deskList";
-import { DeskRepo } from "../../infrastructure/local/repository";
-import Desk from "../../core/entity/desk";
+import { DeskServices } from "../../core/services/services";
 
 export default function HomeScreen(props) {
     const [newDeskVisible, setNewDeskVisible] = useState(false);
@@ -25,18 +25,30 @@ export default function HomeScreen(props) {
     });
 
     async function handleNewDeskOnOk(deskName) {
-        await DeskRepo.create(new Desk(deskName, 1.3, 1, []));
-        setNewDeskVisible(false);
-        navigation.navigate("CreateCard", {defaultDesk: deskName});
+        if (!deskName || deskName === "")
+            return;
+
+        const result = await DeskServices.createNewDesk(deskName);
+        
+        if (result.error) {
+            Toast.show(result.error);
+        } else {
+            Toast.show(result.result);
+            setNewDeskVisible(false);
+        }
     }
 
     function handleNewDeskOnDismiss() {
         setNewDeskVisible(false);
     }
 
+    function handleOnDeskSelected(desk) {
+        navigation.navigate("CreateCard", {defaultDesk: desk});
+    }
+
     return (
         <View style={styles.view}>
-            <DeskList />
+            <DeskList onDeskSelected={handleOnDeskSelected}/>
             <FAB 
                 style={styles.plusIcon}
                 icon="plus"

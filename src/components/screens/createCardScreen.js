@@ -1,22 +1,65 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Paragraph } from 'react-native-paper';
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView } from "react-native";
+import { TextInput, Button } from 'react-native-paper';
+import Toast from "react-native-simple-toast";
+import { DeskServices } from "../../core/services/services";
 
 /**
  * @param {*} props [navigation: defaultDesk]
  */
 export default function CreateCardScreen(props) {
+    const [front, setFront] = useState("");
+    const [back, setBack] = useState("");
+
     const { navigation } = props;
-    
+    const defaultDesk = navigation.getParam("defaultDesk", {});
+
     const styles = StyleSheet.create({
-        a: {
-            alignItems: "center"
+        rootView: {
+            flex: 1,
+            alignContent: "center",
+            padding: 16,
+            flexDirection: "column",
+            justifyContent: "space-between"
         }
     });
 
+    async function handleAddNewCard() {
+        if (!front || !back || !defaultDesk)
+            return;
+
+        if (front === "" || back === "")
+            return;
+
+        const result = await DeskServices.addNewCard(defaultDesk, {front, back});
+        if (result.error) {
+            Toast.show(result.error);
+        } else {
+            Toast.show(result.result);
+            setFront("");
+            setBack("");
+        }
+    }
+
     return (
-        <Paragraph style={styles.a}>
-            {navigation.getParam("defaultDesk", "Noobs")}
-        </Paragraph>
+        <SafeAreaView style={styles.rootView}>
+            <TextInput
+                label="Question"
+                mode="outlined"
+                multiline
+                numberOfLines={12}
+                value={front}
+                onChangeText={text => setFront(text)}
+            />
+            <TextInput
+                label="Answer"
+                mode="outlined"
+                multiline
+                numberOfLines={12}
+                value={back}
+                onChangeText={text => setBack(text)}
+            />
+            <Button mode="contained" onPress={handleAddNewCard}>Add</Button>
+        </SafeAreaView>
     );
 }

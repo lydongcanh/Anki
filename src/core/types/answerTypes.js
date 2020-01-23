@@ -1,6 +1,6 @@
 export default AnswerTypes = {
-    AGAIN = "Again",
-    HARD = "Hard",
-    GOOD = "Good",
-    EASY = "Easy"
+    AGAIN: "Again",
+    HARD: "Hard",
+    GOOD: "Good",
+    EASY: "Easy"
 }

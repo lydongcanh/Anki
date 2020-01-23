@@ -1,6 +1,6 @@
 export default CardType = {
-    NEW = "NEW",
-    LEARNING = "LEARNING",
-    GRADUATED = "GRADUATED",
-    RELEARNING = "RELEARNING"
+    NEW: "NEW",
+    LEARNING: "LEARNING",
+    GRADUATED: "GRADUATED",
+    RELEARNING: "RELEARNING"
 }

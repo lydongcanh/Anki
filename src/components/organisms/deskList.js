@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { ActivityIndicator, List, Surface } from "react-native-paper";
-import { DeskRepo } from "../../infrastructure/local/repository";
+import { ScrollView, StyleSheet } from "react-native";
+import { ActivityIndicator, List, IconButton, Surface } from "react-native-paper";
+import { DeskServices } from "../../core/services/services";
 
+/**
+ * 
+ * @param {*} props onDeskSelected(desk)
+ */
 export default function DeskList(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -25,13 +29,13 @@ export default function DeskList(props) {
         async function loadDesks() {
             setIsLoading(true);
 
-            const result = await DeskRepo.getAll();
+            const result = await DeskServices.getAllDesks();
 
             if (result.error)
                 setError(result.error);
             else
                 setDesks(result.result);
-                
+
             setIsLoading(false);
         }
 
@@ -40,28 +44,36 @@ export default function DeskList(props) {
 
     let list = () => {
         if (isLoading)
-            return <ActivityIndicator style={styles.indicator} animating={true}/>
+            return <ActivityIndicator style={styles.indicator} animating={true} />
 
         return (
-            <List.Section title="Desks">
-                {listItems()}
-            </List.Section>
+            <ScrollView>
+                <List.Section title="Desks">
+                    {listItems()}
+                </List.Section>
+            </ScrollView>
         );
     }
 
     let listItems = () => {
         if (error !== "")
             return (
-                <Surface style={styles.listItemSurface}>
+                <Surface key="error" style={styles.listItemSurface}>
                     <List.Item style={styles.listItem} title="Error" description={error} />
                 </Surface>
             )
 
         const listItems = [];
-        for(const desk of desks) {
+        for (const desk of desks) {
             listItems.push(
                 <Surface key={desk.name} style={styles.listItemSurface}>
-                    <List.Item style={styles.listItem} onPress={() => {}} key={desk.name} title={desk.name}/>
+                    <List.Item
+                        style={styles.listItem}
+                        onPress={() => props.onDeskSelected(desk)}
+                        right={_ => <IconButton icon="delete" onPress={() => DeskServices.deleteDesk(desk.name)} />}
+                        key={desk.name}
+                        title={desk.name}
+                    />
                 </Surface>
             );
         }
