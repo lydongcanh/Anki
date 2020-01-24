@@ -51,4 +51,7 @@ export default class CardServices {
         return addDays(card.lastReviewTime, card.interval) < dueDate;
     }
 
+    async deleteCard(cardFront) {
+        return CardRepo.delete(cardFront);
+    }
 }

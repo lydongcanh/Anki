@@ -4,7 +4,7 @@ import { FAB } from "react-native-paper";
 import Toast from "react-native-simple-toast";
 import NewDeskDialog from "../molecules/newDeskDialog";
 import DeskList from "../organisms/deskList";
-import { DeskServices } from "../../core/services/services";
+import { DeskServices, CardServices } from "../../core/services/services";
 
 export default function HomeScreen(props) {
     const [newDeskVisible, setNewDeskVisible] = useState(false);
@@ -43,7 +43,7 @@ export default function HomeScreen(props) {
     }
 
     function handleOnDeskSelected(desk) {
-        navigation.navigate("CreateCard", {defaultDesk: desk});
+        navigation.navigate("DeskDetails", {desk: desk});
     }
 
     return (

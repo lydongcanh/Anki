@@ -10,6 +10,7 @@ export default class Card {
      */
     constructor (_front, _back, _type, _ease, _interval, _lastReviewTime) {
         this.front = _front;
+        this.back = _back;
         this.type = _type;
         this.ease = _ease;
         this.interval = _interval;

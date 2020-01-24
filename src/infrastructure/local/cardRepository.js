@@ -26,6 +26,7 @@ export default class CardRepository {
     async get(cardFront) {
         try {
             const cardsString = await AsyncStorage.getItem(CARD_PREFIX_ID + cardFront);
+            console.log("card: " + cardsString);
             if (cardsString === null)
                 return { error: `${cardFront} doesn't exist.` }
 
