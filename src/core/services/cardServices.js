@@ -12,11 +12,20 @@ export default class CardServices {
      */
     async getAllCards(desk) {
         const cards = [];
+        const errors = [];
         for(const cardFront of desk.cardFronts) {
-            const card = await CardRepo.get(cardFront, desk);
-            cards.push(card);
+            const result = await CardRepo.get(cardFront, desk);
+            if (result.error) {
+                console.log(result.error);
+                errors.push(result.error);
+            } else {
+                cards.push(result.result);
+            }
         }
-        return cards;
+        return { 
+
+            result: cards 
+        };
     }
 
     /**
@@ -26,12 +35,22 @@ export default class CardServices {
      */
     async getDueCards(desk, dueDate = new Date()) {
         const dueCards = [];
+        const errors = [];
         for(const cardFront of desk.cardFronts) {
-            const card = await CardRepo.get(cardFront, desk);
-            if (this.isDueCard(card, dueDate))
-                dueCards.push(card);
+            const result = await CardRepo.get(cardFront, desk);
+            if (result.error) {
+                console.log(result.error);
+                errors.push(result.error);
+            } else {
+                const card = result.result;
+                if (this.isDueCard(card, dueDate))
+                    dueCards.push(card);
+            }
         }
-        return dueCards;
+        return { 
+            errors: errors,
+            result: dueCards 
+        };
     }
 
     /**

@@ -35,7 +35,7 @@ export default function CreateCardScreen(props) {
         if (result.error) {
             Toast.show(result.error);
         } else {
-            Toast.show(result.result);
+            Toast.show("New card is added.");
             setFront("");
             setBack("");
         }

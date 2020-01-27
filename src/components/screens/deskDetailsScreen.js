@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import { Text, Surface } from "react-native-paper";
 import CardList from "../organisms/cardList";
 
@@ -11,16 +11,10 @@ export default function DeskDetailsScreen(props) {
 
     const styles = StyleSheet.create({
         rootView: {
-            flex: 1,
             alignContent: "flex-start",
-            //justifyContent: "space-between"
         },
-        surface: {
-            alignItems: "flex-start",
-            margin: "25%",
-            padding: 8,
-            elevation: 4,
-            borderRadius: 16,
+        basicInfos: {
+            padding: 8
         },
         cardList: {
         }
@@ -31,12 +25,12 @@ export default function DeskDetailsScreen(props) {
             return ERROR_MESSAGE;
 
         return (
-            <Surface style={styles.surface}>
+            <View style={styles.basicInfos}>
                 <Text>Name: {desk.name}</Text>
                 <Text>Ease bonus: {desk.easeBonus}</Text>
                 <Text>Interval modifier: {desk.intervalModifier}</Text>
                 <Text>Total cards: {desk.cardFronts.length}</Text>
-            </Surface>
+            </View>
         )
     }
     
