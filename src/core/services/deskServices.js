@@ -35,7 +35,7 @@ export default class DeskServices {
         if (updateDeskResult.error)
             return updateDeskResult;
         
-        const addCardResult = await CardRepo.put(newCard);
+        const addCardResult = await CardRepo.put(newCard, desk);
         return addCardResult;
     }
 }

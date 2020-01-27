@@ -59,7 +59,7 @@ export default function HomeScreen(props) {
     async function handleOnDeskDelete(desk) {
         await DeskServices.deleteDesk(desk.name);
         for (const cardFront of desk.cardFronts) {
-            await CardServices.deleteCard(cardFront);
+            await CardServices.deleteCard(cardFront, desk);
         }
 
         const newDesks = [...desks];

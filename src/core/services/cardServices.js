@@ -13,7 +13,7 @@ export default class CardServices {
     async getAllCards(desk) {
         const cards = [];
         for(const cardFront of desk.cardFronts) {
-            const card = await CardRepo.get(cardFront);
+            const card = await CardRepo.get(cardFront, desk);
             cards.push(card);
         }
         return cards;
@@ -27,7 +27,7 @@ export default class CardServices {
     async getDueCards(desk, dueDate = new Date()) {
         const dueCards = [];
         for(const cardFront of desk.cardFronts) {
-            const card = await CardRepo.get(cardFront);
+            const card = await CardRepo.get(cardFront, desk);
             if (this.isDueCard(card, dueDate))
                 dueCards.push(card);
         }
@@ -51,7 +51,7 @@ export default class CardServices {
         return addDays(card.lastReviewTime, card.interval) < dueDate;
     }
 
-    async deleteCard(cardFront) {
-        return CardRepo.delete(cardFront);
+    async deleteCard(cardFront, desk) {
+        return CardRepo.delete(cardFront, desk);
     }
 }
