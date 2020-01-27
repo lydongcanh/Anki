@@ -41,7 +41,7 @@ export default class CardRepository {
     async put(card) {
         try {
             await AsyncStorage.setItem(CARD_PREFIX_ID + card.front, JSON.stringify(card));
-            return { result: `${card.front} card is put.` };
+            return { result: card };
         } catch (error) {
             return { error: error };
         }

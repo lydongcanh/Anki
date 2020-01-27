@@ -40,7 +40,7 @@ export default class DeskRepository {
     async put(desk) {
         try {
             await AsyncStorage.setItem(DESK_PREFIX_ID + desk.name, JSON.stringify(desk));
-            return { result: `${desk.name} desk is put.` };
+            return { result: desk };
         } catch (error) {
             return { error: error };
         }

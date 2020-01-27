@@ -20,5 +20,11 @@ export const DefaultSettings = {
     EASY_INTERVAL: 4
 }
 
+export const ScreenNames = {
+    HOME: "HOME",
+    CREATE_CARD: "CreateCard",
+    DESK_DETAILS: "DeskDetails"
+}
+
 export const CARD_PREFIX_ID = "CARD";
 export const DESK_PREFIX_ID = "DESK";

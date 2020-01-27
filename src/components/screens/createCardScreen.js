@@ -5,14 +5,14 @@ import Toast from "react-native-simple-toast";
 import { DeskServices } from "../../core/services/services";
 
 /**
- * @param {*} props [navigation: defaultDesk]
+ * @param {*} props [navigation: desk]
  */
 export default function CreateCardScreen(props) {
     const [front, setFront] = useState("");
     const [back, setBack] = useState("");
 
     const { navigation } = props;
-    const defaultDesk = navigation.getParam("defaultDesk", {});
+    const desk = navigation.getParam("desk", {});
 
     const styles = StyleSheet.create({
         rootView: {
@@ -25,13 +25,13 @@ export default function CreateCardScreen(props) {
     });
 
     async function handleAddNewCard() {
-        if (!front || !back || !defaultDesk)
+        if (!front || !back || !desk)
             return;
 
         if (front === "" || back === "")
             return;
 
-        const result = await DeskServices.addNewCard(defaultDesk, {front, back});
+        const result = await DeskServices.addNewCard(desk, {front, back});
         if (result.error) {
             Toast.show(result.error);
         } else {
