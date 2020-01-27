@@ -23,7 +23,7 @@ export default class CardServices {
             }
         }
         return { 
-
+            errors: errors,
             result: cards 
         };
     }

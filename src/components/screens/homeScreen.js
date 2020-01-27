@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, AsyncStorage } from "react-native";
 import { FAB } from "react-native-paper";
 import Toast from "react-native-simple-toast";
 import NewDeskDialog from "../molecules/newDeskDialog";
@@ -38,7 +38,7 @@ export default function HomeScreen(props) {
             return;
 
         const result = await DeskServices.createNewDesk(deskName);
-        
+
         if (result.error) {
             Toast.show(result.error);
         } else {
@@ -53,7 +53,7 @@ export default function HomeScreen(props) {
     }
 
     function handleOnDeskSelected(desk) {
-        navigation.navigate(ScreenNames.DESK_DETAILS, {desk: desk});
+        navigation.navigate(ScreenNames.DESK_DETAILS, { desk: desk });
     }
 
     async function handleOnDeskDelete(desk) {
@@ -72,24 +72,32 @@ export default function HomeScreen(props) {
     }
 
     function handleGoToCreateCardScreen(desk) {
-        navigation.navigate(ScreenNames.CREATE_CARD, {desk: desk});
+        navigation.navigate(ScreenNames.CREATE_CARD, { desk: desk });
     }
 
     return (
         <View style={styles.view}>
-            <DeskList 
+            <DeskList
                 desks={desks}
                 getAllDesksFunc={async () => await DeskServices.getAllDesks()}
                 deleteDeskFunc={handleOnDeskDelete}
                 onDeskSelected={handleOnDeskSelected}
                 goToCreateCardsFunc={handleGoToCreateCardScreen}
             />
-            <FAB 
+            <FAB
                 style={styles.plusIcon}
                 icon="plus"
                 onPress={() => setNewDeskVisible(true)}
             />
-            <NewDeskDialog 
+            {/* <FAB
+                style={styles.plusIcon}
+                icon="flower"
+                onPress={async () => {
+                    const result = await AsyncStorage.getAllKeys();
+                    console.log(JSON.stringify(result));
+                }}
+            /> */}
+            <NewDeskDialog
                 visible={newDeskVisible}
                 onOk={handleNewDeskOnOk}
                 onDismiss={handleNewDeskOnDismiss}

@@ -21,6 +21,23 @@ export default class DeskServices {
     }
 
     /**
+     * @param {Desk} desk 
+     * @param {Card} card 
+     */
+    async deleteCard(desk, card) {
+        const deleteCardResult = await CardRepo.delete(card.front, desk);
+        if (deleteCardResult.error)
+            return deleteCardResult;
+
+        const removeIndex = desk.cardFronts.indexOf(card.front);
+        if (removeIndex != -1)
+            desk.cardFronts.splice(removeIndex, 1);
+        await DeskRepo.put(desk);
+
+        return { result: desk };
+    }
+
+    /**
      * Add new card into a desk.
      * @param {Desk} desk 
      */

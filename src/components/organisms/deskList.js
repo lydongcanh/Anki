@@ -26,7 +26,7 @@ export default function DeskList(props) {
 
         return (
             <ScrollView>
-                <List.Section title="Desks">
+                <List.Section>
                     {listItems()}
                 </List.Section>
             </ScrollView>
@@ -50,7 +50,7 @@ export default function DeskList(props) {
                     <List.Item
                         style={styles.listItem}
                         onPress={() => props.onDeskSelected(desk)}
-                        right={_ => deskRightIcons(desk)}
+                        right={() => deskRightIcons(desk)}
                         key={desk.name}
                         title={desk.name}
                     />

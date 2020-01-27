@@ -67,7 +67,7 @@ export default class CardRepository {
             if (!existCard)
                 return { error: `${front} card doesn't exist.` };
 
-            await AsyncStorage.removeItem(CARD_PREFIX_ID + cardFront);
+            await AsyncStorage.removeItem(CARD_PREFIX_ID + desk.name + cardFront);
             return { result: `${cardFront} card is deleted.` };
         } catch (error) {
             return { error: error };
