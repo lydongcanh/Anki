@@ -26,5 +26,19 @@ export const ScreenNames = {
     DESK_DETAILS: "DeskDetails"
 }
 
+export const AnswerTypes = {
+    AGAIN: "Again",
+    HARD: "Hard",
+    GOOD: "Good",
+    EASY: "Easy"
+}
+
+export const CardTypes = {
+    NEW: "NEW",
+    LEARNING: "LEARNING",
+    GRADUATED: "GRADUATED",
+    RELEARNING: "RELEARNING"
+}
+
 export const CARD_PREFIX_ID = "CARD";
 export const DESK_PREFIX_ID = "DESK";
